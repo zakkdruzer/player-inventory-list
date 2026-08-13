@@ -59,11 +59,25 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="item in items" :key="item.id" class="inventory-row">
-                      <td>{{ item.nombre }}</td>
+                    <tr v-for="item in items" :key="item.id" class="inventory-row"
+                      :class="{ 'item-adquirido': item.adquirido }">
+                      <td>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" :id="'adquirido-' + item.id"
+                            v-model="item.adquirido" />
+                          <label class="form-check-label" :for="'adquirido-' + item.id">
+                            {{ item.nombre }}
+                          </label>
+                        </div>
+                      </td>
                       <td>{{ item.cantidad }}</td>
                       <td>{{ item.valor }}</td>
                       <td>{{ item.cantidad * item.valor }}</td>
+                      <td>
+                        <button class="btn btn-sm btn-danger inventory-btn-delete" @click="eliminarItem(item.id)">
+                          Eliminar
+                        </button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -129,6 +143,13 @@ function agregarItem() {
   nuevoNombre.value = ''
   nuevaCantidad.value = 1
   nuevoValor.value = 0
+}
+
+/**
+ * Elimina un item del inventario por su id.
+ */
+function eliminarItem(id) {
+  items.value = items.value.filter(item => item.id !== id)
 }
 </script>
 
@@ -213,5 +234,20 @@ function agregarItem() {
 
 .inventory-row:hover {
   background: rgba(99, 102, 241, 0.1);
+}
+
+.item-adquirido {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+.inventory-btn-delete {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #fca5a5;
+}
+
+.inventory-btn-delete:hover {
+  background: rgba(239, 68, 68, 0.4);
 }
 </style>
