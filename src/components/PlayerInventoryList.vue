@@ -11,10 +11,71 @@
           </div>
 
           <div class="card-body">
-            <!-- Aquí irá el formulario y la lista -->
-            <p class="text-center inventory-status">
-              Inventario vacío. Agrega tu primer item.
-            </p>
+            <!-- Formulario para agregar items -->
+            <form @submit.prevent="agregarItem" class="mb-4">
+              <div class="row g-2">
+                <div class="col-md-4">
+                  <input
+                    v-model="nuevoNombre"
+                    type="text"
+                    class="form-control inventory-input"
+                    placeholder="Nombre del item"
+                  />
+                </div>
+                <div class="col-md-2">
+                  <input
+                    v-model.number="nuevaCantidad"
+                    type="number"
+                    class="form-control inventory-input"
+                    placeholder="Cant."
+                    min="1"
+                  />
+                </div>
+                <div class="col-md-2">
+                  <input
+                    v-model.number="nuevoValor"
+                    type="number"
+                    class="form-control inventory-input"
+                    placeholder="Valor"
+                    min="0"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <button
+                    type="submit"
+                    class="btn btn-primary w-100 inventory-btn"
+                  >
+                    Agregar item
+                  </button>
+                </div>
+              </div>
+
+              <!-- Mensajes de error -->
+              <div
+                v-if="errorFormulario"
+                class="alert inventory-alert inventory-alert-warning mt-2"
+                role="alert"
+              >
+                {{ errorFormulario }}
+              </div>
+            </form>
+
+            <!-- Estado vacío -->
+            <div
+              v-if="items.length === 0"
+              class="text-center inventory-empty"
+            >
+              <p class="inventory-status">
+                Inventario vacío. Agrega tu primer item.
+              </p>
+            </div>
+
+            <!-- Lista de items (aún sin lógica completa) -->
+            <div v-else>
+              <p class="inventory-status">
+                Items en el inventario: {{ items.length }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -23,7 +84,59 @@
 </template>
 
 <script setup>
-// Por ahora no hay lógica, solo estructura.
+import { ref } from 'vue'
+
+// Array de items del inventario.
+// Cada item será un objeto: { id, nombre, cantidad, valor, adquirido }
+const items = ref([])
+
+// Campos del formulario
+const nuevoNombre = ref('')
+const nuevaCantidad = ref(1)
+const nuevoValor = ref(0)
+
+// Mensaje de error del formulario
+const errorFormulario = ref('')
+
+// Contador para generar ids únicos
+let siguienteId = 1
+
+/**
+ * Agrega un nuevo item al inventario.
+ * Valida que el nombre no esté vacío y la cantidad sea >= 1.
+ */
+function agregarItem() {
+  // Limpiamos errores previos
+  errorFormulario.value = ''
+
+  // Validaciones básicas
+  if (nuevoNombre.value.trim() === '') {
+    errorFormulario.value = 'El nombre del item no puede estar vacío.'
+    return
+  }
+
+  if (nuevaCantidad.value < 1) {
+    errorFormulario.value = 'La cantidad debe ser al menos 1.'
+    return
+  }
+
+  // Creamos el nuevo item
+  const item = {
+    id: siguienteId++,
+    nombre: nuevoNombre.value.trim(),
+    cantidad: nuevaCantidad.value,
+    valor: nuevoValor.value,
+    adquirido: false
+  }
+
+  // Lo agregamos al array
+  items.value.push(item)
+
+  // Limpiamos el formulario
+  nuevoNombre.value = ''
+  nuevaCantidad.value = 1
+  nuevoValor.value = 0
+}
 </script>
 
 <style scoped>
@@ -46,6 +159,40 @@
   color: #a5b4fc;
   font-size: 0.9rem;
   margin-bottom: 0;
+}
+
+.inventory-input {
+  background: rgba(31, 41, 55, 0.7);
+  border: 1px solid #374151;
+  color: #e5e7eb;
+}
+
+.inventory-input:focus {
+  background: rgba(31, 41, 55, 0.9);
+  border-color: #818cf8;
+  color: #e5e7eb;
+  box-shadow: 0 0 0 0.2rem rgba(129, 140, 248, 0.25);
+}
+
+.inventory-btn {
+  background: linear-gradient(90deg, #6366f1, #818cf8);
+  border: none;
+  font-weight: 600;
+  color: #0b0f19;
+}
+
+.inventory-btn:hover {
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+}
+
+.inventory-alert-warning {
+  background: rgba(251, 191, 36, 0.1);
+  color: #fde68a;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+}
+
+.inventory-empty {
+  padding: 2rem 0;
 }
 
 .inventory-status {
