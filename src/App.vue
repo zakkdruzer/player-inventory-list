@@ -1,11 +1,16 @@
-<script setup></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div id="app"></div>
 </template>
 
-<style scoped></style>
+<script setup>
+// Contenedor base, la lógica irá en componentes.
+</script>
+
+<style>
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0b0f19;
+  color: #e5e7eb;
+}
+</style>
