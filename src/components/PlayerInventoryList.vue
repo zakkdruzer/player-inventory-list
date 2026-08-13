@@ -15,66 +15,59 @@
             <form @submit.prevent="agregarItem" class="mb-4">
               <div class="row g-2">
                 <div class="col-md-4">
-                  <input
-                    v-model="nuevoNombre"
-                    type="text"
-                    class="form-control inventory-input"
-                    placeholder="Nombre del item"
-                  />
+                  <input v-model="nuevoNombre" type="text" class="form-control inventory-input"
+                    placeholder="Nombre del item" />
                 </div>
                 <div class="col-md-2">
-                  <input
-                    v-model.number="nuevaCantidad"
-                    type="number"
-                    class="form-control inventory-input"
-                    placeholder="Cant."
-                    min="1"
-                  />
+                  <input v-model.number="nuevaCantidad" type="number" class="form-control inventory-input"
+                    placeholder="Cant." min="1" />
                 </div>
                 <div class="col-md-2">
-                  <input
-                    v-model.number="nuevoValor"
-                    type="number"
-                    class="form-control inventory-input"
-                    placeholder="Valor"
-                    min="0"
-                  />
+                  <input v-model.number="nuevoValor" type="number" class="form-control inventory-input"
+                    placeholder="Valor" min="0" />
                 </div>
                 <div class="col-md-4">
-                  <button
-                    type="submit"
-                    class="btn btn-primary w-100 inventory-btn"
-                  >
+                  <button type="submit" class="btn btn-primary w-100 inventory-btn">
                     Agregar item
                   </button>
                 </div>
               </div>
 
               <!-- Mensajes de error -->
-              <div
-                v-if="errorFormulario"
-                class="alert inventory-alert inventory-alert-warning mt-2"
-                role="alert"
-              >
+              <div v-if="errorFormulario" class="alert inventory-alert inventory-alert-warning mt-2" role="alert">
                 {{ errorFormulario }}
               </div>
             </form>
 
             <!-- Estado vacío -->
-            <div
-              v-if="items.length === 0"
-              class="text-center inventory-empty"
-            >
+            <div v-if="items.length === 0" class="text-center inventory-empty">
               <p class="inventory-status">
                 Inventario vacío. Agrega tu primer item.
               </p>
             </div>
 
-            <!-- Lista de items (aún sin lógica completa) -->
+            <!-- Lista de items -->
             <div v-else>
-              <p class="inventory-status">
-                Items en el inventario: {{ items.length }}
-              </p>
+              <div class="table-responsive">
+                <table class="table table-dark inventory-table">
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Cantidad</th>
+                      <th>Valor unit.</th>
+                      <th>Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="item in items" :key="item.id" class="inventory-row">
+                      <td>{{ item.nombre }}</td>
+                      <td>{{ item.cantidad }}</td>
+                      <td>{{ item.valor }}</td>
+                      <td>{{ item.cantidad * item.valor }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -198,5 +191,27 @@ function agregarItem() {
 .inventory-status {
   color: #a5b4fc;
   font-size: 0.95rem;
+}
+
+.inventory-table {
+  background: rgba(17, 24, 39, 0.6);
+  color: #e5e7eb;
+}
+
+.inventory-table th {
+  color: #a5b4fc;
+  border-color: #374151;
+}
+
+.inventory-table td {
+  border-color: #374151;
+}
+
+.inventory-row {
+  transition: background 0.2s;
+}
+
+.inventory-row:hover {
+  background: rgba(99, 102, 241, 0.1);
 }
 </style>
