@@ -1,38 +1,27 @@
-# player-inventory-list
+# Player Inventory List
 
-This template should help get you started developing with Vue 3 in Vite.
+Lista de inventario de items de un jugador de videojuegos. Permite agregar items con nombre, cantidad y valor, marcarlos como “adquiridos” y eliminarlos. Calcula automáticamente el valor total del inventario y el valor de los items pendientes.
 
-## Recommended IDE Setup
+## Tecnologías
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Vue 3 (Composition API, `<script setup>`)
+- Vite
+- Bootstrap (CSS por CDN)
 
-## Recommended Browser Setup
+## Cómo levantar el proyecto
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
+```bash
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+## Decisiones técnicas
 
-```sh
-npm run build
-```
+- Cada item es un objeto con `id` único, usado como `:key` en el `v-for` para evitar problemas al eliminar o reordenar.
+- Los totales (inventario completo y pendientes) se calculan con `computed`, no se guardan en variables reactivas propias.
+- Se valida el formulario antes de agregar un item, mostrando mensajes de error en pantalla en lugar de `alert()`.
+- El estado vacío se muestra con un mensaje claro cuando no hay items en el inventario.
+
+## Enlace desplegado
+
+https://zakkdruzer.github.io/player-inventory-list/
