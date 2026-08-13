@@ -46,6 +46,8 @@
               </p>
             </div>
 
+
+
             <!-- Lista de items -->
             <div v-else>
               <div class="table-responsive">
@@ -83,6 +85,25 @@
                 </table>
               </div>
             </div>
+            <!-- Totales -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <div class="card inventory-total-card">
+                  <div class="card-body">
+                    <h5 class="inventory-total-title">Valor total del inventario</h5>
+                    <p class="inventory-total-value">{{ totalInventario }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card inventory-total-card">
+                  <div class="card-body">
+                    <h5 class="inventory-total-title">Valor pendiente de adquisición</h5>
+                    <p class="inventory-total-value">{{ totalPendientes }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -91,7 +112,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 // Array de items del inventario.
 // Cada item será un objeto: { id, nombre, cantidad, valor, adquirido }
@@ -151,6 +172,26 @@ function agregarItem() {
 function eliminarItem(id) {
   items.value = items.value.filter(item => item.id !== id)
 }
+
+/**
+ * Calcula el valor total de todos los items del inventario.
+ */
+const totalInventario = computed(() => {
+  return items.value.reduce((suma, item) => {
+    return suma + item.cantidad * item.valor
+  }, 0)
+})
+
+/**
+ * Calcula el valor total de los items que aún no han sido adquiridos.
+ */
+const totalPendientes = computed(() => {
+  return items.value
+    .filter(item => !item.adquirido)
+    .reduce((suma, item) => {
+      return suma + item.cantidad * item.valor
+    }, 0)
+})
 </script>
 
 <style scoped>
@@ -249,5 +290,24 @@ function eliminarItem(id) {
 
 .inventory-btn-delete:hover {
   background: rgba(239, 68, 68, 0.4);
+}
+
+.inventory-total-card {
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid #374151;
+  border-radius: 12px;
+}
+
+.inventory-total-title {
+  color: #a5b4fc;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.inventory-total-value {
+  color: #818cf8;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 0;
 }
 </style>
