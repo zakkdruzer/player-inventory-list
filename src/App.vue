@@ -1,9 +1,9 @@
 <template>
-  <div id="app"></div>
+  <PlayerInventoryList />
 </template>
 
 <script setup>
-// Contenedor base, la lógica irá en componentes.
+import PlayerInventoryList from './components/PlayerInventoryList.vue'
 </script>
 
 <style>
