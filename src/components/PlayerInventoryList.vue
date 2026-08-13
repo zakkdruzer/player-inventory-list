@@ -14,19 +14,35 @@
             <!-- Formulario para agregar items -->
             <form @submit.prevent="agregarItem" class="mb-4">
               <div class="row g-2">
+                <!-- Nombre del item -->
                 <div class="col-md-4">
-                  <input v-model="nuevoNombre" type="text" class="form-control inventory-input"
-                    placeholder="Nombre del item" />
+                  <label for="itemNombre" class="form-label inventory-label">
+                    Nombre del item
+                  </label>
+                  <input id="itemNombre" v-model="nuevoNombre" type="text" class="form-control inventory-input"
+                    placeholder="Ej: Poción de vida" />
                 </div>
+
+                <!-- Cantidad -->
                 <div class="col-md-2">
-                  <input v-model.number="nuevaCantidad" type="number" class="form-control inventory-input"
-                    placeholder="Cant." min="1" />
+                  <label for="itemCantidad" class="form-label inventory-label">
+                    Cantidad
+                  </label>
+                  <input id="itemCantidad" v-model.number="nuevaCantidad" type="number"
+                    class="form-control inventory-input" placeholder="Ej: 5" min="1" />
                 </div>
+
+                <!-- Valor unitario -->
                 <div class="col-md-2">
-                  <input v-model.number="nuevoValor" type="number" class="form-control inventory-input"
-                    placeholder="Valor" min="0" />
+                  <label for="itemValor" class="form-label inventory-label">
+                    Valor unit.
+                  </label>
+                  <input id="itemValor" v-model.number="nuevoValor" type="number" class="form-control inventory-input"
+                    placeholder="Ej: 50" min="0" />
                 </div>
-                <div class="col-md-4">
+
+                <!-- Botón agregar -->
+                <div class="col-md-4 d-flex align-items-end">
                   <button type="submit" class="btn btn-primary w-100 inventory-btn">
                     Agregar item
                   </button>
@@ -309,5 +325,12 @@ const totalPendientes = computed(() => {
   font-weight: 700;
   font-size: 1.2rem;
   margin: 0;
+}
+
+.inventory-label {
+  color: #a5b4fc;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 </style>
